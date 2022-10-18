@@ -12,7 +12,6 @@ extension FileManager {
             do {
                 try FileManager.default.removeItem(atPath: url.path)
             } catch {
-                Log.shared.error(error)
             }
         }
     }

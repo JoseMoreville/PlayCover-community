@@ -16,7 +16,6 @@ class Entitlements {
                                                         withIntermediateDirectories: true,
                                                         attributes: [:])
             } catch {
-                Log.shared.error(error)
             }
         }
         return entFolder

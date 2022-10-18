@@ -23,7 +23,7 @@ class AppIntegrity: ObservableObject {
             try FileManager.default.delete(at: AppIntegrity.appUrl!)
             exit(0)
         } catch {
-            Log.shared.error(error)
+            // Log.shared.error(error)
         }
     }
 

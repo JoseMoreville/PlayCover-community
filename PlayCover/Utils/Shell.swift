@@ -26,7 +26,7 @@ class Shell: ObservableObject {
 		let output = String(data: data, encoding: .utf8)!
 
 		if print {
-			Log.shared.log(output)
+			//Log.shared.log(output)
 		}
 
 		task.waitUntilExit()
@@ -63,7 +63,7 @@ class Shell: ObservableObject {
 
         let output = try pipe.fileHandleForReading.readToEnd() ?? Data()
         if print {
-            Log.shared.log(String(decoding: output, as: UTF8.self))
+            //Log.shared.log(String(decoding: output, as: UTF8.self))
         }
 
         process.waitUntilExit()
@@ -155,7 +155,7 @@ class Shell: ObservableObject {
             if data.count == 0 { return }
 
             if let out = String(bytes: data, encoding: .utf8) {
-                Log.shared.log(out)
+                //Log.shared.log(out)
                 if out.contains("password") {
                     result = false
                 }
@@ -188,7 +188,7 @@ class Shell: ObservableObject {
         let output = String(data: data, encoding: .utf8)!
 
         if print {
-            Log.shared.log(output)
+            //Log.shared.log(output)
         }
 
         return output
