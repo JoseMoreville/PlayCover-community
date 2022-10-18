@@ -8,6 +8,15 @@ import Foundation
 import IOKit.pwr_mgt
 
 class PlayApp: BaseApp {
+    private static let library = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library")
+    lazy var appStorageLocations: [URL] = [
+        PlayApp.library.appendingPathComponent("Application Scripts").appendingPathComponent(info.bundleIdentifier),
+        PlayApp.library.appendingPathComponent("Caches").appendingPathComponent(info.bundleIdentifier),
+        PlayApp.library.appendingPathComponent("HTTPStorages").appendingPathComponent(info.bundleIdentifier),
+        PlayApp.library.appendingPathComponent("Saved Application State")
+            .appendingPathComponent(info.bundleIdentifier).appendingPathExtension(".savedState")
+     ]
+
     var searchText: String {
         info.displayName.lowercased().appending(" ").appending(info.bundleName).lowercased()
     }
@@ -84,12 +93,9 @@ class PlayApp: BaseApp {
 
     var icon: NSImage? {
         var highestRes: NSImage?
-        let appDirectoryURL = PlayTools.playCoverContainer
-            .appendingPathComponent(info.executableName)
-            .appendingPathExtension("app")
-        let appDirectoryPath = "\(appDirectoryURL.relativePath)/"
+        let appDirectoryPath = "\(url.relativePath)/"
 
-        if let assetsExtractor = try? AssetsExtractor(appUrl: appDirectoryURL) {
+        if let assetsExtractor = try? AssetsExtractor(appUrl: url) {
             for icon in assetsExtractor.extractIcons() {
                 highestRes = largerImage(image: icon, compareTo: highestRes)
             }
@@ -134,6 +140,18 @@ class PlayApp: BaseApp {
 
     func openAppCache() {
         container?.containerUrl.showInFinderAndSelectLastComponent()
+    }
+
+    func clearAllCache() {
+        do {
+            for cache in appStorageLocations {
+                try FileManager.default.delete(at: cache)
+            }
+
+            container?.clear()
+        } catch {
+            Log.shared.error(error)
+        }
     }
 
     func deleteApp() {
